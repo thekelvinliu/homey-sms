@@ -1,0 +1,25 @@
+{
+  "name": "HomeySMS",
+  "version": "0.0.1",
+  "description": "project for Hudson Hack 2015 Intern Edition",
+  "author": "Kelvin Liu <kelvin@thekelvinliu.com>",
+  "contributors": [
+    "Shuyu Chen <sc4251@nyu.edu>",
+    "Ivy Cheung <sc4438@nyu.edu>",
+    "Brian Ngobidi <bngobidi@crisistextline.org>"
+  ],
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "compression": ">=1.5.1",
+    "ejs": ">=2.3.3",
+    "express": ">=4.13.1",
+    "mongodb": ">=2.0.39"
+  },
+  "engines": {
+    "node": "0.12.x"
+  },
+  "private": true
+}
