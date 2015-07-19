@@ -1,0 +1,10 @@
+.chatbox-msg-shown{
+    padding-left: 36px;
+}
+.menu-item {
+    flex-grow: 1;
+    flex-direction: row;
+}
+.row {
+    align-items: baseline;
+}
