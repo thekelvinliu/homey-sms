@@ -1,6 +1,6 @@
 // TWILIO
-var account_sid = "ACd882274f43e1f2fffb2f26e4348ea273";
-var auth_token = "7db2af93aa137cfeb9eff5224fa18ec8";
+var account_sid = process.env.TWILIO_ACCOUNT_SID;
+var auth_token = process.env.TWILIO_AUTH_TOKEN;
 var twilio = require('twilio');
 var client = new twilio.RestClient(account_sid, auth_token);
 
