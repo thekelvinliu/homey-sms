@@ -29,27 +29,20 @@ MongoClient.connect(uri, function(err, database) {
 
 // HOME
 app.get('/', function(req, res) {
-//   res.sendFile(__dirname + '/views/index.html');
-// });
+  res.sendFile(__dirname + '/views/index.html');
+});
 
-// // RESPONSE PLATFORM
-// app.get('/responder', function(req, res) {
-  messages.findOne({"service": {"$exists": true}}, function(err, doc) {
+app.get('/test', function(req, res) {
+  res.sendFile(__dirname + '/views/responder.html');
+});
+
+// RESPONSE PLATFORM
+app.get('/responder', function(req, res) {
+  messages.findOne({"$and": [{"service": {"$ne": "SHELTER"}}, {"service": {"$ne": "FOOD"}}]}, function(err, doc) {
+    if (err) throw err;
     console.log(doc);
-    res.send(doc);
+    res.render(__dirname + '/views/responder.html', doc);
   });
-  // messages.findOne()
-  // locInfo.find({_id: 1}).toArray(function(err, docs) {
-  //   if (err) throw err;
-  //   var locData;
-  //   if (docs.length == 1) {
-  //     locData = docs[0];
-  //   } else {
-  //     locData = defLocData;
-  //   }
-  //   console.log(locData);
-  //   res.render(__dirname + '/views/contact.html', locData);
-  // });
 });
 
 // INBOUND TEXTS
