@@ -37,7 +37,6 @@ app.get('/test', function(req, res) {
 });
 
 app.get('/twiml', function(req, res) {
-  var resp = new twilio.TwimlResponse();
   var data = req.query;
   if (!data.hasOwnProperty('Body')) {
     console.log("Not a text.");
@@ -51,31 +50,37 @@ app.get('/twiml', function(req, res) {
     }
     switch (obj["body"]) {
       case "SHELTER":
+        var resp = new twilio.TwimlResponse();
         var msg = "Where are you? Send me your nearest crosst street (e.g. 5th Ave and W 20th St), and I'll give you info on the shelter closest to you!";
         resp.message(msg);
         obj["service"] = "shelter";
         messages.update({"_id": obj["_id"]}, obj, {upsert: true});
+        res.send(resp.toString());
         break;
       case "FOOD":
+        var resp = new twilio.TwimlResponse();
         var msg = "Where are you? Send me your nearest crosst street (e.g. 5th Ave and W 20th St), and I'll give you info on the soup kitchen closest to you!";
         resp.message(msg);
         obj["service"] = "food";
         messages.update({"_id": obj["_id"]}, obj, {upsert: true});
+        res.send(resp.toString());
         break;
       default:
         messages.find({"_id": obj["_id"]}).toArray(function(err, docs) {
+          var resp = new twilio.TwimlResponse();
           if (err) {
             console.log(err);
           } else if (docs.length) {
             obj["service"] = docs[0]["service"];
             messages.update({"_id": obj["_id"]}, obj);
+            resp.message("Got it--I'll get back to you in a few minutes!");
           } else {
             console.log("found no docs");
             var msg = "Huh, not sure what you're trying to do? Text SHELTER for info on shelters and FOOD for info on soup kitchens near you!";
             resp.message(msg);
           }
+          res.send(resp.toString());
         });
     }
-    res.send(resp.toString());
   }
 });
