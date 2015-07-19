@@ -8,6 +8,7 @@ var client = new twilio.RestClient(account_sid, auth_token);
 var express = require('express');
 var app = express();
 app.use(require('compression')());
+app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/static'));
 app.engine('.html', require('ejs').__express);
 app.set('port', (process.env.PORT || 5000));
@@ -29,27 +30,24 @@ MongoClient.connect(uri, function(err, database) {
 
 // HOME
 app.get('/', function(req, res) {
-//   res.sendFile(__dirname + '/views/index.html');
-// });
+  res.sendFile(__dirname + '/views/index.html');
+});
 
-// // RESPONSE PLATFORM
-// app.get('/responder', function(req, res) {
-  messages.findOne({"service": {"$exists": true}}, function(err, doc) {
+app.get('/test', function(req, res) {
+  res.sendFile(__dirname + '/views/test.html');
+});
+
+app.post('/test', function(req, res) {
+  console.log(req.body);
+});
+
+// RESPONSE PLATFORM
+app.get('/responder', function(req, res) {
+  messages.findOne({"$or": [{"service": {"$ne": "SHELTER"}}, {"service": {"$ne": "FOOD"}}]}, function(err, doc) {
+    if (err) throw err;
     console.log(doc);
-    res.send(doc);
+    res.render(__dirname + '/views/responder.html', doc);
   });
-  // messages.findOne()
-  // locInfo.find({_id: 1}).toArray(function(err, docs) {
-  //   if (err) throw err;
-  //   var locData;
-  //   if (docs.length == 1) {
-  //     locData = docs[0];
-  //   } else {
-  //     locData = defLocData;
-  //   }
-  //   console.log(locData);
-  //   res.render(__dirname + '/views/contact.html', locData);
-  // });
 });
 
 // INBOUND TEXTS
