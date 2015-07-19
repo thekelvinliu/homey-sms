@@ -8,6 +8,7 @@ var client = new twilio.RestClient(account_sid, auth_token);
 var express = require('express');
 var app = express();
 app.use(require('compression')());
+app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/static'));
 app.engine('.html', require('ejs').__express);
 app.set('port', (process.env.PORT || 5000));
@@ -33,12 +34,16 @@ app.get('/', function(req, res) {
 });
 
 app.get('/test', function(req, res) {
-  res.sendFile(__dirname + '/views/responder.html');
+  res.sendFile(__dirname + '/views/test.html');
+});
+
+app.post('/test', function(req, res) {
+  console.log(req.body);
 });
 
 // RESPONSE PLATFORM
 app.get('/responder', function(req, res) {
-  messages.findOne({"$and": [{"service": {"$ne": "SHELTER"}}, {"service": {"$ne": "FOOD"}}]}, function(err, doc) {
+  messages.findOne({"$or": [{"service": {"$ne": "SHELTER"}}, {"service": {"$ne": "FOOD"}}]}, function(err, doc) {
     if (err) throw err;
     console.log(doc);
     res.render(__dirname + '/views/responder.html', doc);
