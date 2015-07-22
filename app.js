@@ -8,9 +8,7 @@ var client = new twilio.RestClient(account_sid, auth_token);
 var express = require('express');
 var app = express();
 app.use(require('compression')());
-app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/static'));
-app.engine('.html', require('ejs').__express);
 app.set('port', (process.env.PORT || 5000));
 
 // MONGODB
