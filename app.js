@@ -33,23 +33,6 @@ app.get('/', function(req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-app.get('/test', function(req, res) {
-  res.sendFile(__dirname + '/views/test.html');
-});
-
-app.post('/test', function(req, res) {
-  console.log(req.body);
-});
-
-// RESPONSE PLATFORM
-app.get('/responder', function(req, res) {
-  messages.findOne({"$or": [{"service": {"$ne": "SHELTER"}}, {"service": {"$ne": "FOOD"}}]}, function(err, doc) {
-    if (err) throw err;
-    console.log(doc);
-    res.render(__dirname + '/views/responder.html', doc);
-  });
-});
-
 // INBOUND TEXTS
 app.get('/twiml', function(req, res) {
   var data = req.query;
